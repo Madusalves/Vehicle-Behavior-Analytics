@@ -1,0 +1,32 @@
+---
+description: Entidades, value objects — só ErrorOr; sem throw no modelo rico
+globs: "**/Domain/**/*.cs"
+alwaysApply: false
+---
+
+# Camada Domain
+
+## Entidades e value objects (`Entities/`, `ValueObjects/`)
+
+- Invariantes e regras: **somente `ErrorOr`** (fábricas estáticas `Criar`, métodos que retornam `ErrorOr<Success>` quando aplicável).
+- **Não utilizar `throw`**, `DomainException`, `ArgumentException` nem outras exceções **dentro** desses tipos para fluxo de negócio ou validação esperada.
+
+## Demais arquivos no Domain
+
+- **`Domain/Errors/`**: catálogo único de `Error` com códigos estáveis — usado por entidades/VOs **e** pelos handlers (Application/Authentication), inclusive falhas detectadas só no caso de uso (ex.: “não encontrado” após repositório).
+- **Enums**, **interfaces** (`IRoleVerifier`, etc.).
+- **Extensões** (`Extensions/`, `Helpers/`): para validações ou conversões de negócio, preferir **`ErrorOr`**; **`throw`** apenas para falha **técnica** irrecuperável nesse ponto (ex.: plataforma não suportada), nunca como substituto de regra de negócio que deveria estar em entidade/VO.
+
+## Proibições
+
+- Sem referência a EF Core, HTTP, logging de infraestrutura ou serviços de aplicação.
+- Sem atributos de API ou FluentValidation (validação de request fica na Application).
+
+## Modelagem
+
+- Preferir tipos ricos em vez de modelos anêmicos quando a regra de negócio exigir.
+- Value objects imutáveis; igualdade por valor quando fizer sentido.
+
+## Testes
+
+- Testes unitários do Domain: rápidos, sem banco; foco em invariantes e comportamento via resultados `ErrorOr`.

@@ -1,0 +1,40 @@
+---
+description: Testes unitários e de integração do template
+globs: "**/tests/**/*.cs"
+alwaysApply: false
+---
+
+# Testes
+
+## Estrutura
+
+- **UnitTests**: domínio (entidades, value objects), handlers com dependências mockadas (**Moq**).
+- **IntegrationTests**: `WebApplicationFactory<Program>`; substituir DbContext/repositórios quando o factory já definir (in-memory, Testcontainers).
+
+## Convenções
+
+- Um cenário por teste quando possível; nomes que descrevam o comportamento esperado (`Metodo_Cenario_ResultadoEsperado` ou padrão já usado no projeto).
+- Isolamento: não depender de ordem global de execução entre classes; dados únicos por teste quando usar DB compartilhado.
+
+## Traits xUnit (`Category`)
+
+- Toda **classe** de teste deve declarar **`[Trait("Category", "<valor>")]`** imediatamente antes de `public class ...Tests`, para permitir filtro (`dotnet test --filter "Category=Unit"` / `Category=Integration`).
+- **UnitTests**: use **`[Trait("Category", "Unit")]`** em cada classe de teste do projeto.
+- **IntegrationTests**: use **`[Trait("Category", "Integration")]`** em cada classe de teste do projeto.
+- O atributo **`Trait` do xUnit não é válido em nível de assembly** (`[assembly: Trait(...)]` não compila); não usar essa forma.
+
+## Integração
+
+- Respeitar variável de ambiente / Docker quando o factory detectar disponibilidade; não falhar silenciosamente — seguir o padrão existente em `ProjetoPadraoWebApplicationFactory`.
+
+## Cobertura
+
+- Novas regras de negócio críticas: preferir pelo menos um teste de unidade no domínio ou handler.
+- Para endpoints ou fluxos críticos, incluir pelo menos um teste de integração ou unitário que cubra o caminho principal; alinhar-se ao padrão de `ProjetoPadraoWebApplicationFactory` (detecção de Docker, connection strings temporárias, etc.).
+
+## Mínimo por tipo de alteração
+
+- Mudança em **Domain** (entidade/VO/regra): teste unitário obrigatório cobrindo sucesso e pelo menos uma falha esperada (`ErrorOr`).
+- Mudança em **Handler** (Application/Authentication): teste unitário com mocks obrigatório para caminho principal e erro esperado.
+- Mudança em **Controller/contrato HTTP**: teste de integração recomendado para status code, envelope e serialização.
+- Mudança em **Infrastructure** com query relevante: preferir teste de integração cobrindo comportamento de persistência/paginação/ordenação.

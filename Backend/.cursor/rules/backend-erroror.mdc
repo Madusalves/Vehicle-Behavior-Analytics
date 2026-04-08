@@ -1,0 +1,29 @@
+---
+description: ErrorOr obrigatório — sem throw para fluxo esperado; catálogo de erros em Domain/Errors; throw só infra/técnico
+alwaysApply: true
+---
+
+# ErrorOr — regras de negócio
+
+## Mesma regra: entidades, value objects e handlers (Application / Authentication)
+
+- **Proibido `throw`** para invariante, regra de negócio, validação de fluxo ou erro **esperado** (não encontrado, conflito, credenciais inválidas, regra de produto, etc.).
+- Toda essa falha deve ser expressa com **`ErrorOr<T>`** (ou `ErrorOr<Success>` quando fizer sentido), compondo ou propagando com `Errors` / `Then` / checagens `IsError`.
+- Nos **handlers**: retorno **`Task<ErrorOr<T>>`** ou **`ErrorOr<T>`**.
+
+## Catálogo de erros (`Domain/Errors/`)
+
+- Toda falha retornada em **`ErrorOr`** (a ser mapeada para HTTP / contrato da API) deve usar **`Error` com código estável** definido em **`Domain/Errors/`**, **mesmo quando a detecção ocorrer no handler** ou na infraestrutura de aplicação (ex.: “não encontrado” após consulta ao repositório).
+- Organizar por contexto (ex.: `EmpresaErrors`, `UsuarioErrors`); evitar `Error.Validation` / `Error.NotFound` “solto” no handler sem passar pelo catálogo, salvo migração gradual explícita do projeto.
+- Convenção recomendada para códigos: `Contexto.AcaoOuRegra` (ex.: `Usuario.NaoEncontrado`, `Empresa.CnpjInvalido`) para facilitar rastreabilidade e estabilidade entre API e clientes.
+
+## Onde `throw` é permitido
+
+- **Infrastructure**: persistência (EF, timeouts, falhas de conexão), I/O, integrações externas quando a falha é **técnica** ou **operacional**, não um fluxo de negócio que deva vir como `ErrorOr`.
+- **API / host**: configuração inválida na subida, middleware tratando exceções não previstas.
+- **Helpers técnicos** (fora de entidades, VOs e handlers): falhas **irrecuperáveis** naquele ponto (ex.: plataforma não suportada).
+- **Exceção**: não usar `throw` para substituir regra de negócio ou conflito que o cliente deva entender via código estável em `Domain/Errors/`. Quando um erro de banco reflete regra de negócio (ex.: violação de unicidade esperada), preferir detectar e retornar **`ErrorOr`** com erro do catálogo.
+
+## API
+
+- Converter `ErrorOr` em HTTP com **`Match`** / `MainController.Problem` (Problem Details).

@@ -1,0 +1,12 @@
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Infrastructure\bin\Debug\net10.0\Infrastructure.deps.json
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Infrastructure\bin\Debug\net10.0\Infrastructure.dll
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Infrastructure\bin\Debug\net10.0\Infrastructure.pdb
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Infrastructure\obj\Debug\net10.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Infrastructure\obj\Debug\net10.0\Infrastructure.AssemblyInfoInputs.cache
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Infrastructure\obj\Debug\net10.0\Infrastructure.AssemblyInfo.cs
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Infrastructure\obj\Debug\net10.0\Infrastructure.csproj.CoreCompileInputs.cache
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Infrastructure\obj\Debug\net10.0\Infrastructure.sourcelink.json
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Infrastructure\obj\Debug\net10.0\Infrastructure.dll
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Infrastructure\obj\Debug\net10.0\refint\Infrastructure.dll
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Infrastructure\obj\Debug\net10.0\Infrastructure.pdb
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Infrastructure\obj\Debug\net10.0\ref\Infrastructure.dll

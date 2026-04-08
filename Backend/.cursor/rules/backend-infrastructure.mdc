@@ -1,0 +1,43 @@
+---
+description: EF Core, repositórios, serviços de infraestrutura e email
+globs: "**/Infrastructure/**/*.cs"
+alwaysApply: false
+---
+
+# Camada Infrastructure
+
+## Persistência
+
+- Um **DbContext** por bounded context quando fizer sentido (ex.: negócio vs. autenticação).
+- **DbContext** (ex.: `ProjetoPadraoContext`) com `DbSet`s e `OnModelCreating` delegando a `IEntityTypeConfiguration` em `EntityConfig` ou equivalente.
+- **Repositórios** implementam interfaces da Application; registrados via extensão DI (ex.: `AddRepositoriesServices`).
+- **Migrations** versionadas no projeto Infrastructure, commitadas junto com a alteração de modelo; nomes descritivos; revisar scripts em ambientes compartilhados.
+- Migrations devem ser criadas por **linha de comando** (`dotnet ef ...`), nunca por ações automáticas/visuais do IDE.
+- O agente **nunca** deve executar comando de aplicação de migrations no banco (ex.: `dotnet ef database update` / `update-database`).
+- Para leituras sem atualização, preferir consultas `AsNoTracking()` para reduzir custo de change tracking.
+- Quando houver risco de concorrência de escrita, considerar controle otimista (ex.: `RowVersion`) conforme padrão do contexto.
+
+## Serviços
+
+- Implementações concretas de `IEmailService` e outros serviços de infraestrutura aqui; configuração via `IOptions<TSettings>`.
+
+## Consultas
+
+- Evitar N+1; paginação reutilizando tipos comuns (`IPaginacao`, `Paginacao`) quando já existirem no projeto.
+- Padronizar ordenação/paginação para evitar variações por repositório e manter previsibilidade de contratos.
+
+## Separação
+
+- Lógica de negócio que não é persistência ou integração externa não pertence à Infrastructure.
+
+## Erros e exceções
+
+- Falhas **técnicas** (banco, rede, I/O): **exceções** são aceitáveis; propagam para middleware ou são tratadas no repositório conforme o padrão do projeto (ver `backend-erroror.mdc`).
+- Quando a infraestrutura detectar uma condição que é **regra de negócio** (ex.: unicidade), preferir retorno que o handler traduza em **`ErrorOr`** com erro de **`Domain/Errors/`**, em vez de `throw` genérico.
+
+## Definition of Done (Infrastructure)
+
+- Alteração de modelo inclui migration consistente e revisão de impacto em índices/constraints.
+- Repositório novo mantém contrato da Application sem vazar detalhes de EF para camadas internas.
+- Condições de negócio detectadas por persistência (ex.: unicidade) mapeadas para erro de catálogo via `ErrorOr`.
+- Operações async propagam `CancellationToken`.

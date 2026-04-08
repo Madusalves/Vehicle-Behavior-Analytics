@@ -1,0 +1,79 @@
+---
+description: Padrões gerais .NET / ASP.NET Core do template backend
+alwaysApply: true
+---
+
+# Backend .NET — visão geral
+
+Projeto em camadas: **API**, **Application**, **Domain**, **Infrastructure**, **Authentication** (quando houver auth separada). Dependências apontam para dentro: API → Application/Infrastructure/Authentication; Application → Domain; Domain sem referências a outras camadas.
+
+## Projetos típicos (papel de cada camada)
+
+- **API**: host ASP.NET Core, controllers, middlewares, configuração (`Program.cs`).
+- **Application**: casos de uso (handlers), DTOs, validação (FluentValidation), mapeamentos (Mapster), interfaces de repositório/serviço.
+- **Domain**: entidades, value objects, enums, erros tipados (`Domain/Errors/`) e regras puras; em entidades/VOs, falhas só via **ErrorOr** (ver `backend-erroror.mdc`).
+- **Infrastructure**: EF Core, repositórios, integrações (e-mail, etc.).
+- **Authentication** (opcional): identidade, JWT, fluxos de login e conta, `DbContext` e migrations próprios quando separados do negócio.
+
+## Direção das dependências (detalhe)
+
+- **Domain** não referencia outros projetos da solução.
+- **Application** referencia **Domain** e contratos (interfaces); não referencia **API**.
+- **Infrastructure** implementa interfaces da **Application** e referencia **Domain** conforme necessário.
+- **API** referencia **Application**, **Infrastructure**, **Authentication**; **Domain** na API apenas se inevitável para tipos expostos — preferir DTOs na borda.
+
+## Novo recurso de negócio
+
+1. **Especificação**: em `docs/features/`, procurar e **ler** o documento da feature correspondente ao desenvolvimento, quando existir (ver `backend-features-docs.mdc`).
+2. Modelar no **Domain** (entidade/VO/enums).
+3. Contrato em **Application** (`I...Repository`, requests/handlers).
+4. Implementação em **Infrastructure** (repositório, `EntityTypeConfiguration`, migration).
+5. Endpoint em **API** (controller chamando handler).
+
+## Stack e pacotes
+
+- **.NET 8** (`global.json`: `8.0.*`).
+- **EF Core** para persistência; migrations por contexto.
+- **ErrorOr** para fluxos esperados; catálogo de **`Error`** em **`Domain/Errors/`** (códigos estáveis), inclusive falhas detectadas nos handlers; na API, `Match` / `Problem` nos controllers (ver `backend-erroror.mdc`).
+- **FluentValidation** + método `Validar` em `BaseHandler`; **todo request de handler** deve ter validator (`AbstractValidator<T>`) — ver `backend-application.mdc` e `backend-authentication.mdc`.
+- **Mapster** (`MapConfig`, `Adapt`, `IMapper`) — não usar AutoMapper neste template.
+- **Serilog** a partir da configuração.
+- Testes: **xUnit**, **Moq**, integração com **WebApplicationFactory** / Testcontainers quando aplicável.
+
+## Configuração, logging e segurança
+
+- Hierarquia: `appsettings.json` + `appsettings.{Environment}.json` + variáveis de ambiente; classes de settings tipadas e registro com `IOptions<T>`.
+- **Serilog** a partir da `Configuration`; enrichers como `FromLogContext` quando já estiver no template; níveis por ambiente (Verbose/Debug em desenvolvimento; Information/Warning em produção). Nunca logar senhas, tokens completos ou PII desnecessária.
+- Observabilidade mínima: para fluxos críticos, garantir logs de início/fim do caso de uso em nível `Information`; inconsistências de fluxo esperado em `Warning`; falhas inesperadas em `Error` com contexto suficiente para diagnóstico sem expor dados sensíveis.
+- Produção: HTTPS; revisar **CORS** (desenvolvimento pode ser permissivo — apertar em produção). Autenticação/autorização nos endpoints que exigem; validar entrada nos requests (FluentValidation). Secrets fora do repositório; dependências e imagens Docker atualizadas.
+- **Feature flags** (`Microsoft.FeatureManagement`): documentar flags e valores esperados por ambiente no README ou wiki do projeto.
+
+## Estilo C#
+
+PascalCase em tipos e membros públicos; camelCase em locais; `var` quando o tipo é óbvio; async/await em I/O; LINQ quando legível. **Entidades, VOs e handlers:** mesma regra — sem `throw` para negócio ou fluxo esperado; só **`ErrorOr`** com erros do catálogo em **`Domain/Errors/`**. **Exceções** para infra (banco, I/O, integrações), API/host e falhas técnicas irrecuperáveis; middleware global trata o que escapar.
+
+## Assinaturas assíncronas e cancelamento
+
+- Todo método assíncrono de handler, serviço e repositório deve aceitar e propagar `CancellationToken`.
+- Evitar bloqueio síncrono (`.Result`, `.Wait()`, `GetAwaiter().GetResult()`) em código de aplicação.
+
+## Definition of Done (mínimo)
+
+- Mudança de regra de negócio: erro mapeado em `Domain/Errors/` com código estável.
+- Novo request de handler: `AbstractValidator<TRequest>` + validação no início do `Handle`.
+- Mudança de contrato HTTP: ajustar `ProducesResponseType`, envelope e testes relevantes.
+- Mudança em fluxo crítico: incluir ou atualizar testes (unitário/integrado conforme camada).
+
+## Anti-patterns (evitar sempre)
+
+- Controller acessando diretamente `DbContext`.
+- Validator de request executando I/O (BD, HTTP, fila, cache remoto).
+- Regra de negócio codificada dentro de Infrastructure.
+- `throw` em handlers/entidades/VOs para erro esperado de negócio.
+
+## Onde aprofundar
+
+- Regras por pasta: `.cursor/rules/backend-*.mdc` (inclui `backend-erroror.mdc` — ErrorOr em Domain, Application e Authentication).
+- Especificação de produto por recurso: `docs/features/` e `backend-features-docs.mdc`.
+
+Siga as convenções oficiais da Microsoft para C# e ASP.NET Core.

@@ -1,0 +1,12 @@
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Domain\bin\Debug\net10.0\Domain.deps.json
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Domain\bin\Debug\net10.0\Domain.dll
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Domain\bin\Debug\net10.0\Domain.pdb
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Domain\obj\Debug\net10.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Domain\obj\Debug\net10.0\Domain.AssemblyInfoInputs.cache
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Domain\obj\Debug\net10.0\Domain.AssemblyInfo.cs
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Domain\obj\Debug\net10.0\Domain.csproj.CoreCompileInputs.cache
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Domain\obj\Debug\net10.0\Domain.sourcelink.json
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Domain\obj\Debug\net10.0\Domain.dll
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Domain\obj\Debug\net10.0\refint\Domain.dll
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Domain\obj\Debug\net10.0\Domain.pdb
+D:\logistics-stack-projects\Vehicle-Behavior-Analytics\src\Domain\obj\Debug\net10.0\ref\Domain.dll

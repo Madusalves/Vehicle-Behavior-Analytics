@@ -1,0 +1,43 @@
+---
+description: Controllers, erros HTTP e convenções da camada API
+globs: "**/API/**/*.cs"
+alwaysApply: false
+---
+
+# Camada API
+
+## Controllers
+
+- Herdar `MainController` quando precisar de `Problem(List<Error>)` e mapeamento ErrorOr → HTTP.
+- `[ApiController]`, rotas com `[Route("api/...")]` em português ou inglês de forma consistente com o restante do projeto.
+- Versionamento: manter estratégia consistente do projeto (ex.: prefixo `v1` na rota quando adotado). Não misturar estilos de versionamento no mesmo módulo.
+- Controllers **finos**: orquestram handlers injetados; sem regra de negócio nem acesso direto a `DbContext`.
+- Retornos: `result.Match(sucesso => Ok(BaseResponse<...>.Sucesso(...)), Problem)` ou equivalente; envelope com `success`, `data`, `message` (opcional). Usar `ProducesResponseType` alinhado ao contrato real (ex.: `typeof(BaseResponse<Dto>)`).
+- Para listagens, padronizar contrato de paginação/filtro/ordenação com tipos comuns já existentes no projeto (evitar payload ad-hoc por endpoint).
+
+## Erros
+
+- Falhas de **regra de negócio** chegam como **`ErrorOr`** dos handlers (Application / Authentication), sem `throw` nesses handlers para erro esperado; entidades/VOs no Domain também não lançam — mapear com **`Match`** / `Problem` (incluindo `ValidationProblemDetails` quando todos os erros forem de validação).
+- O **middleware global** (`GlobalErrorHandlerMiddleware`) trata **exceções** e erros inesperados (infra, bugs, o que escapar), gerando **Problem Details** (`application/problem+json`).
+- `BadRequestException` e `NotFoundException` da Application são tratadas em `GlobalExceptionMiddleware`, também como Problem Details (alinhado ao `MainController`).
+- Respostas de erro em **Problem Details** (`application/problem+json`) onde já configurado (`MainController`, middlewares acima, `ProjetoPadraoProblemDetailsFactory`).
+- Não suprimir validação automática sem motivo; o template usa `SuppressModelStateInvalidFilter` com validação explícita nos handlers — manter esse contrato.
+
+### Envelope de sucesso (breaking)
+
+- O campo JSON **`success`** no envelope de sucesso substitui o antigo **`status`** (boolean). Atualizar clientes que dependiam do nome antigo.
+
+## Cross-cutting
+
+- Middlewares e filtros em pastas claras (`Common`, `Middlewares`). Chaves em `HttpContext.Items` documentadas (ex.: `HttpContextItemKeys`).
+
+## Definition of Done (API)
+
+- Endpoint novo/alterado com `ProducesResponseType` de sucesso e erros compatível com o contrato real.
+- Conversão de `ErrorOr` para HTTP via `Match` / `Problem` sem `throw` para fluxo esperado.
+- Contrato de resposta coerente com envelope padrão (`success`, `data`, `message`) quando aplicável.
+- Se rota de listagem: paginação/filtros/ordenação no padrão do projeto e teste cobrindo caminho principal.
+
+## Configuração
+
+- CORS, Swagger, JWT e Serilog configurados em `Program.cs` / extensões; preferir classes de settings tipadas (`Options`) para novas opções.

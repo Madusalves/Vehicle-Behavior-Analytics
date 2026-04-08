@@ -1,0 +1,58 @@
+---
+description: Handlers, DTOs, validação e Mapster na camada Application
+globs: "**/Application/**/*.cs"
+alwaysApply: false
+---
+
+# Camada Application
+
+## Organização
+
+- **Handlers**: pasta `Handlers/{Entidade}/{Ação}/` com `{Ação}{Entidade}Handler.cs`, `{Ação}{Entidade}Request.cs` e **`{Ação}{Entidade}RequestValidator`** (`AbstractValidator<{Ação}{Entidade}Request>`) — **obrigatório sempre que existir request de entrada**; colocar no mesmo ficheiro do record ou em ficheiro dedicado, conforme o projeto.
+- **DTOs** em `DTOs/{Entidade}/`; **interfaces** de repositório/serviço em `Interfaces/`.
+- Mapeamentos centralizados em `Mappings/MapConfig.cs` (`TypeAdapterConfig`).
+
+## Validators de request (FluentValidation)
+
+- **Obrigatório** para todo `{Ação}{Entidade}Request` usado pelo handler: classe **`{Ação}{Entidade}RequestValidator`** e validação no início do `Handle` com `BaseHandler.Validar` (padrão abaixo).
+- O validator cobre:
+  - **Formato e limites** (tamanho, intervalo, regex, enum válido, etc.).
+  - **Obrigatoriedade** e equivalente a “não vazio” quando aplicável (`NotEmpty`, `Must` para não só espaços, alinhado ao domínio quando fizer sentido).
+  - **Regras condicionais entre campos do próprio request** quando fazem parte do contrato do caso de uso (ex.: se o campo A foi informado, B também deve ser; intervalos de datas coerentes), desde que **não dependam de I/O** (sem BD nem serviço externo dentro do validator).
+- **Códigos de erro**: para falhas que o cliente trata de forma estável, usar **`WithErrorCode`** alinhado ao catálogo em **`Domain/Errors/`** (e mensagens coerentes); evitar só `WithMessage` sem código estável.
+- **Fronteira com o Domain**: invariantes de entidade, existência de agregados, unicidade e políticas que exigem repositório/serviço permanecem na **entidade/handler** com **`ErrorOr`** e erros do catálogo; o validator de request **não** substitui essas regras.
+
+### Matriz de responsabilidade de validação
+
+- Formato, obrigatoriedade e regras condicionais entre campos do request: **Validator (Application)**.
+- Invariantes de entidade e regras puras de negócio: **Domain (entidades/VOs)**.
+- Existência, unicidade e políticas dependentes de I/O: **Handler + repositório/serviço** retornando **`ErrorOr`** com erro de `Domain/Errors/`.
+
+## Handlers
+
+- Herdar `BaseHandler` quando usar `Validar(request, new ...Validator())`.
+- Padrão de validação:
+
+```csharp
+if (Validar(request, new CriarXRequestValidator()) is var resultado && resultado.Any())
+    return resultado;
+```
+
+- Retorno dos handlers (e serviços de caso de uso expostos como o handler): **`Task<ErrorOr<T>>`** ou **`ErrorOr<T>`**; falhas com **`Error` definidos em `Domain/Errors/`** (catálogo único, códigos estáveis — ver `backend-erroror.mdc`). Propagar erros com `Errors` / composição (`Then`, checagens `IsError`).
+- **Proibido `throw`** no código dos handlers para regra de negócio, validação de fluxo ou erro esperado — sempre retornar `Error` dentro de `ErrorOr`.
+- Métodos assíncronos devem receber e propagar `CancellationToken` em toda a cadeia (controller → handler → repositório/serviço).
+- Após persistência: `await _repository.UnitOfWork.Commit()` quando usar unit of work explícito.
+- Mapear entidade → DTO com **Mapster** (`Adapt<T>()`, `IMapper`) e configs em `MapConfig`.
+
+## Regras
+
+- Application **não** referencia projetos de API ou hosts; pode referenciar Domain e contratos de infra via interfaces.
+- Sem `HttpContext` ou detalhes de ASP.NET Core nos handlers (exceto se houver padrão já estabelecido muito específico).
+- FluentValidation de **request** fica na Application (ou pasta junto ao handler), **não** no Domain.
+
+## Definition of Done (Application)
+
+- Request de entrada tem `AbstractValidator<TRequest>` e validação no início do `Handle`.
+- Fluxos de erro esperado retornam `ErrorOr` com código do catálogo `Domain/Errors/`.
+- Métodos async propagam `CancellationToken`.
+- Alteração de regra de negócio inclui ao menos um teste unitário de handler ou domínio.

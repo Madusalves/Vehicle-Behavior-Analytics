@@ -1,0 +1,25 @@
+---
+description: Consultar docs/features antes de implementar ou alterar recursos de negócio
+alwaysApply: true
+---
+
+# Documentação de features (`docs/features/`)
+
+Sempre que for **desenvolver ou alterar** um recurso de negócio (API, Application, Domain, Infrastructure ou Authentication ligados a uma capacidade do produto):
+
+1. **Procurar** em `docs/features/` um documento que corresponda ao trabalho (nome do recurso, aggregate, módulo, ou título alinhado ao pedido).
+2. **Se existir**, **ler** o arquivo (ou as seções pertinentes) e alinhar implementação, contratos e regras ao que está especificado.
+3. **Se não existir**, seguir as demais regras do projeto; criar ou atualizar um doc em `docs/features/` apenas quando isso fizer parte do fluxo acordado pelo time.
+
+Para tarefas puramente transversais (CI, tooling, refator sem mudança de comportamento de produto), este passo pode ser omitido quando claramente não houver feature associada.
+
+## Template recomendado para `docs/features/`
+
+Quando o time optar por criar/atualizar documentação de feature, preferir esta estrutura mínima:
+
+1. **Objetivo e contexto**: problema de negócio, escopo e não-escopo.
+2. **Regras de negócio**: decisões, invariantes, fluxos de sucesso/falha.
+3. **Erros do catálogo**: códigos em `Domain/Errors/` usados pela feature.
+4. **Contrato API**: endpoints, requests, responses e paginação quando aplicável.
+5. **Segurança e autorização**: quem pode executar cada ação.
+6. **Critérios de teste**: cenários mínimos (unitário/integração) para validar a feature.

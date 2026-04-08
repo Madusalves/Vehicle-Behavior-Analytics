@@ -1,0 +1,25 @@
+---
+description: Identity, JWT, handlers e contexto de autenticação
+globs: "**/Authentication/**/*.cs"
+alwaysApply: false
+---
+
+# Projeto Authentication
+
+## Escopo
+
+- Fluxos de **login**, **refresh token**, **confirmação de email**, **recuperação de senha**, **roles**.
+- **DbContext** próprio e migrations dedicadas quando o template separar dados de auth dos dados de negócio.
+- Migrations de Authentication devem ser criadas por **linha de comando** (`dotnet ef ...`), nunca por ações automáticas/visuais do IDE.
+- O agente **nunca** deve executar comando de aplicação de migrations no banco (ex.: `dotnet ef database update` / `update-database`).
+
+## Padrões
+
+- Handlers e requests alinhados à Application (nomes `{Ação}Handler`, `{Ação}Request`).
+- Handlers com retorno **`Task<ErrorOr<T>>`** (ou `ErrorOr<T>` quando síncrono): mesma regra que Application — **`ErrorOr`** + **`Error` do catálogo em `Domain/Errors/`** (códigos estáveis), sem `throw` para fluxo esperado (ver `backend-erroror.mdc`).
+- Extensões de DI (`AddAuthenticationServices`, `AddJwtServices`, middleware) mantidas coesas e registradas no host (`Program.cs`).
+- Serviços expostos à Application via interfaces na Application quando necessário (`IAuthenticationService`, verificação de roles).
+
+## Segurança
+
+- Não persistir ou logar credenciais em claro; não logar tokens completos ou códigos de recuperação. Secrets apenas via configuração segura (User Secrets, variáveis de ambiente, Key Vault, etc.), nunca em código.
