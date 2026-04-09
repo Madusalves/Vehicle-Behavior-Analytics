@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mVnlzECK6Yo=",
+  "dgSpecHash": "zz1eblVR9og=",
   "success": true,
-  "projectFilePath": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\tests\\UnitTests\\UnitTests.csproj",
+  "projectFilePath": "d:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\Backend\\tests\\IntegrationTests\\IntegrationTests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\madus\\.nuget\\packages\\coverlet.collector\\6.0.4\\coverlet.collector.6.0.4.nupkg.sha512",
     "C:\\Users\\madus\\.nuget\\packages\\microsoft.codecoverage\\17.14.1\\microsoft.codecoverage.17.14.1.nupkg.sha512",

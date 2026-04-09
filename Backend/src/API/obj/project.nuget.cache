@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xbksHN4Om4g=",
+  "dgSpecHash": "UZAdR6dAz2c=",
   "success": true,
-  "projectFilePath": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\src\\API\\API.csproj",
+  "projectFilePath": "d:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\Backend\\src\\API\\API.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\src\\Application\\Application.csproj",
+      "projectUniqueName": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\Backend\\src\\Application\\Application.csproj",
       "projectName": "Application",
-      "projectPath": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\src\\Application\\Application.csproj",
+      "projectPath": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\Backend\\src\\Application\\Application.csproj",
       "packagesPath": "C:\\Users\\madus\\.nuget\\packages\\",
-      "outputPath": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\src\\Application\\obj\\",
+      "outputPath": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\Backend\\src\\Application\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

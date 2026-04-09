@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "h67/LU+gg34=",
+  "dgSpecHash": "v9/fSW2DRXM=",
   "success": true,
-  "projectFilePath": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\src\\Infrastructure\\Infrastructure.csproj",
+  "projectFilePath": "d:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\Backend\\src\\Infrastructure\\Infrastructure.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

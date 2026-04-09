@@ -920,11 +920,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\tests\\UnitTests\\UnitTests.csproj",
-      "projectName": "UnitTests",
-      "projectPath": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\tests\\UnitTests\\UnitTests.csproj",
+      "projectUniqueName": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\Backend\\tests\\IntegrationTests\\IntegrationTests.csproj",
+      "projectName": "IntegrationTests",
+      "projectPath": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\Backend\\tests\\IntegrationTests\\IntegrationTests.csproj",
       "packagesPath": "C:\\Users\\madus\\.nuget\\packages\\",
-      "outputPath": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\tests\\UnitTests\\obj\\",
+      "outputPath": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\Backend\\tests\\IntegrationTests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

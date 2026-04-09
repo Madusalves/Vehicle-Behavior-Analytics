@@ -15,18 +15,18 @@ primary
 lastDtbSucceeded
 
 [properties]
-AssemblyName=IntegrationTests
+AssemblyName=Authentication
 CommandLineArgsForDesignTimeEvaluation=-langversion:14.0 -define:TRACE
 CompilerGeneratedFilesOutputPath=
 MaxSupportedLangVersion=14.0
 ProjectAssetsFile=<PATH>obj/project.assets.json
-RootNamespace=IntegrationTests
+RootNamespace=Authentication
 RunAnalyzers=
 RunAnalyzersDuringLiveAnalysis=
-SolutionPath=<PATH>../../VehicleBehaviorAnalytics.slnx
+SolutionPath=<PATH>../../../VehicleBehaviorAnalytics.slnx
 TargetFrameworkIdentifier=.NETCoreApp
-TargetPath=<PATH>bin/Debug/net10.0/IntegrationTests.dll
-TargetRefPath=<PATH>obj/Debug/net10.0/ref/IntegrationTests.dll
+TargetPath=<PATH>bin/Debug/net10.0/Authentication.dll
+TargetRefPath=<PATH>obj/Debug/net10.0/ref/Authentication.dll
 TemporaryDependencyNodeTargetIdentifier=net10.0
 
 [commandLineArguments]
@@ -46,9 +46,9 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /debug:portable
 /filealign:512
 /optimize-
-/out:obj\Debug\net10.0\IntegrationTests.dll
-/refout:obj\Debug\net10.0\refint\IntegrationTests.dll
-/target:exe
+/out:obj\Debug\net10.0\Authentication.dll
+/refout:obj\Debug\net10.0\refint\Authentication.dll
+/target:library
 /warnaserror-
 /utf8output
 /deterministic+
@@ -56,30 +56,13 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
-<NUGET>/microsoft.net.test.sdk/17.14.1/build/net8.0/Microsoft.NET.Test.Sdk.Program.cs
+Class1.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
- IntegrationTests.AssemblyInfo.cs
- IntegrationTests.GlobalUsings.g.cs
-UnitTest1.cs
+ Authentication.AssemblyInfo.cs
+ Authentication.GlobalUsings.g.cs
 
 [metadataReferences]
-<NUGET>/
- microsoft.codecoverage/17.14.1/lib/net8.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll
- microsoft.testplatform.testhost/17.14.1/lib/net8.0/
-  Microsoft.TestPlatform.CommunicationUtilities.dll
-  Microsoft.TestPlatform.CoreUtilities.dll
-  Microsoft.TestPlatform.CrossPlatEngine.dll
-  Microsoft.TestPlatform.PlatformAbstractions.dll
-  Microsoft.TestPlatform.Utilities.dll
-  Microsoft.VisualStudio.TestPlatform.Common.dll
-  Microsoft.VisualStudio.TestPlatform.ObjectModel.dll
-  testhost.dll
- newtonsoft.json/13.0.3/lib/net6.0/Newtonsoft.Json.dll
- xunit.abstractions/2.0.3/lib/netstandard2.0/xunit.abstractions.dll
- xunit.assert/2.9.3/lib/net6.0/xunit.assert.dll
- xunit.extensibility.core/2.9.3/lib/netstandard1.1/xunit.core.dll
- xunit.extensibility.execution/2.9.3/lib/netstandard1.1/xunit.execution.dotnet.dll
 C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.3/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
@@ -250,9 +233,6 @@ C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.3/ref/net10.0/
  WindowsBase.dll
 
 [analyzerReferences]
-<NUGET>/xunit.analyzers/1.18.0/analyzers/dotnet/cs/
- xunit.analyzers.dll
- xunit.analyzers.fixes.dll
 C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.3/analyzers/dotnet/cs/
  Microsoft.Interop.ComInterfaceGenerator.dll
  Microsoft.Interop.JavaScript.JSImportGenerator.dll
@@ -266,4 +246,4 @@ C:/Program Files/dotnet/sdk/10.0.103/Sdks/Microsoft.NET.Sdk/analyzers/
 
 [analyzerConfigFiles]
 C:/Program Files/dotnet/sdk/10.0.103/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_default.globalconfig
-obj/Debug/net10.0/IntegrationTests.GeneratedMSBuildEditorConfig.editorconfig
+obj/Debug/net10.0/Authentication.GeneratedMSBuildEditorConfig.editorconfig

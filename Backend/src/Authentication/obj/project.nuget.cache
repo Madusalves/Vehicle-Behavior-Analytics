@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "R/jFwDBS45k=",
+  "dgSpecHash": "T8U5MX05HbQ=",
   "success": true,
-  "projectFilePath": "D:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\src\\Authentication\\Authentication.csproj",
+  "projectFilePath": "d:\\logistics-stack-projects\\Vehicle-Behavior-Analytics\\Backend\\src\\Authentication\\Authentication.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
