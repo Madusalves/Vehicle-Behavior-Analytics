@@ -1,0 +1,43 @@
+# Build outputs
+[Bb]in/
+[Oo]bj/
+artifacts/
+out/
+
+# Test and coverage
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+coverage/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+!**/packages/build/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDE/editor
+.vs/
+.vscode/
+.idea/
+*.DotSettings.user
+_ReSharper*/
+*.ReSharper
+
+# Logs and temp
+*.log
+*.cache
+*.tmp
+*.temp
+
+# OS files
+.DS_Store
+Thumbs.db
